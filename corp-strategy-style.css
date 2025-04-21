@@ -365,3 +365,79 @@ li {
     margin-top: 0;
     margin-bottom: 10px;
 }
+/* Scroll indicator styles */
+.scroll-indicator {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(32, 64, 128, 0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.scroll-indicator.hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+}
+
+.scroll-text {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.scroll-arrow {
+    font-size: 20px;
+    animation: bounce 2s infinite;
+}
+
+.scroll-indicator.pulse {
+    animation: pulse 1s;
+}
+
+/* Slide counter styles */
+.slide-counter {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(32, 64, 128, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+/* Animations */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(32, 64, 128, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(32, 64, 128, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(32, 64, 128, 0);
+    }
+}
