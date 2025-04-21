@@ -6,17 +6,21 @@ body, html {
     color: #333;
 }
 
-/* .slide-container {
-    width: 100%;
-    overflow-y: auto;
-    scroll-snap-type: y proximity; /* Changed from mandatory to proximity for better experience */
-} */
-
 .slide-container {
     height: 100vh; /* Ensure full viewport height */
     width: 100%;
     overflow-y: auto;
     scroll-snap-type: y proximity;
+}
+
+.navigation {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .slide {
