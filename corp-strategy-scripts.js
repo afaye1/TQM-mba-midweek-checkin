@@ -1,69 +1,76 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Create scroll indicator element
-    const scrollIndicator = document.createElement('div');
-    scrollIndicator.className = 'scroll-indicator';
-    scrollIndicator.innerHTML = `
-        <div class="scroll-text">Scroll Down</div>
-        <div class="scroll-arrow">↓</div>
-    `;
-    document.body.appendChild(scrollIndicator);
-
-    // Show the indicator only on the first few slides
+    // Elements
     const slideContainer = document.querySelector('.slide-container');
-    let scrollTimeout;
-    let isVisible = true;
-
-    // Hide indicator after scrolling
-    function handleScroll() {
-        if (slideContainer.scrollTop > window.innerHeight) {
-            scrollIndicator.classList.add('hidden');
-            isVisible = false;
-        } else if (slideContainer.scrollTop < 100) {
-            scrollIndicator.classList.remove('hidden');
-            isVisible = true;
-        }
-
-        // Make indicator temporarily visible when user stops scrolling
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(function() {
-            if (slideContainer.scrollTop < window.innerHeight * 3) {
-                scrollIndicator.classList.remove('hidden');
-                setTimeout(function() {
-                    if (slideContainer.scrollTop > window.innerHeight) {
-                        scrollIndicator.classList.add('hidden');
-                    }
-                }, 2000);
-            }
-        }, 1000);
-    }
-
-    slideContainer.addEventListener('scroll', handleScroll);
-
-    // Pulse animation for the indicator
-    setInterval(function() {
-        if (isVisible) {
-            scrollIndicator.classList.add('pulse');
-            setTimeout(function() {
-                scrollIndicator.classList.remove('pulse');
-            }, 1000);
-        }
-    }, 3000);
-
-    // Create slide counter
-    const slideCounter = document.createElement('div');
-    slideCounter.className = 'slide-counter';
-    document.body.appendChild(slideCounter);
-
-    // Update slide counter on scroll
     const slides = document.querySelectorAll('.slide');
     const totalSlides = slides.length;
     
-    function updateSlideCounter() {
-        const slideHeight = window.innerHeight;
-        const currentSlide = Math.round(slideContainer.scrollTop / slideHeight) + 1;
-        slideCounter.textContent = `${currentSlide} / ${totalSlides}`;
+    // Create navigation UI elements
+    const navigationUI = document.createElement('div');
+    navigationUI.className = 'presentation-navigation';
+    navigationUI.innerHTML = `
+        <div class="slide-progress">
+            <span class="current-slide">1</span>
+            <span class="total-slides">/ ${totalSlides}</span>
+        </div>
+        <div class="navigation-hint">
+            <span class="hint-icon">↓</span>
+            <span class="hint-text">Scroll to navigate</span>
+        </div>
+    `;
+    document.body.appendChild(navigationUI);
+    
+    const currentSlideElement = document.querySelector('.current-slide');
+    const navigationHint = document.querySelector('.navigation-hint');
+    
+    // Hide navigation hint after user has scrolled
+    let scrolled = false;
+    let hintTimeout;
+    
+    function handleScroll() {
+        // Update visibility of navigation hint
+        if (!scrolled && slideContainer.scrollTop > 50) {
+            scrolled = true;
+            navigationHint.classList.add('fade-out');
+            
+            // Show hint briefly when user pauses scrolling
+            clearTimeout(hintTimeout);
+            hintTimeout = setTimeout(() => {
+                navigationHint.classList.remove('fade-out');
+                setTimeout(() => {
+                    navigationHint.classList.add('fade-out');
+                }, 2000);
+            }, 1500);
+        }
+        
+        // Update current slide indicator
+        updateCurrentSlide();
     }
-
-    slideContainer.addEventListener('scroll', updateSlideCounter);
-    updateSlideCounter(); // Initialize counter
+    
+    function updateCurrentSlide() {
+        // Determine which slide is most visible
+        let maxVisibleSlide = 0;
+        let maxVisibleArea = 0;
+        
+        slides.forEach((slide, index) => {
+            const rect = slide.getBoundingClientRect();
+            const visibleTop = Math.max(0, rect.top);
+            const visibleBottom = Math.min(window.innerHeight, rect.bottom);
+            const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+            
+            if (visibleHeight > maxVisibleArea) {
+                maxVisibleArea = visibleHeight;
+                maxVisibleSlide = index;
+            }
+        });
+        
+        // Update slide counter
+        currentSlideElement.textContent = maxVisibleSlide + 1;
+    }
+    
+    // Event listeners
+    slideContainer.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', updateCurrentSlide);
+    
+    // Initialize
+    updateCurrentSlide();
 });
