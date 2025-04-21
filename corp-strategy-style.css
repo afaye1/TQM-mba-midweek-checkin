@@ -6,10 +6,17 @@ body, html {
     color: #333;
 }
 
-.slide-container {
+/* .slide-container {
     width: 100%;
     overflow-y: auto;
     scroll-snap-type: y proximity; /* Changed from mandatory to proximity for better experience */
+} */
+
+.slide-container {
+    height: 100vh; /* Ensure full viewport height */
+    width: 100%;
+    overflow-y: auto;
+    scroll-snap-type: y proximity;
 }
 
 .slide {
@@ -508,4 +515,18 @@ li {
     60% {
         transform: translateY(-3px);
     }
+}
+#prevSlide, #nextSlide {
+    pointer-events: auto; /* Ensure buttons are clickable */
+    background-color: #204080;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 16px;
+}
+#prevSlide:hover, #nextSlide:hover {
+    background-color: #2c5ebd;
 }
