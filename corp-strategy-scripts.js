@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to go to a specific slide by index
   function goToSlide(index, shouldScroll = true) {
       if (index < 0) {
-          currentSlideIndex = slides.length - 1; // Loop to last slide
+          currentSlideIndex = slides.length - 1;
       } else if (index >= slides.length) {
-          currentSlideIndex = 0; // Loop to first slide
+          currentSlideIndex = 0;
       } else {
           currentSlideIndex = index;
       }
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
       goToSlide(currentSlideIndex + 1);
   });
 
-  // Event listeners for keyboard arrow keys (Up/Down or Left/Right)
+  // Event listeners for keyboard arrow keys
   document.addEventListener('keydown', function(event) {
       if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
           goToSlide(currentSlideIndex + 1);
@@ -52,29 +52,37 @@ document.addEventListener('DOMContentLoaded', function() {
   // Event listener for clicks on navigation links
   document.querySelectorAll('nav a').forEach(link => {
       link.addEventListener('click', function(event) {
-          event.preventDefault(); // Prevent the default jump behavior
-          const targetId = this.getAttribute('href').substring(1); // Get the id without the '#'
+          event.preventDefault();
+          const targetId = this.getAttribute('href').substring(1);
           const targetSlide = document.getElementById(targetId);
           if (targetSlide) {
               const index = Array.from(slides).indexOf(targetSlide);
               if (index !== -1) {
-                  goToSlide(index); // Go to the slide using our function
+                  currentSlideIndex = index; // Directly update the index
+                  slideContainer.scrollTo({ // Still perform the smooth scroll
+                      top: targetSlide.offsetTop,
+                      behavior: 'smooth'
+                  });
+                  updateSlideCounter();
               }
           }
       });
   });
 
-  // Initialize slide counter and start with the first slide
+  // Initialize slide counter and handle initial hash if present
   updateSlideCounter();
-
-  // Optionally, if you want to handle initial load from a hash in the URL
   if (window.location.hash) {
       const initialId = window.location.hash.substring(1);
       const initialSlide = document.getElementById(initialId);
       if (initialSlide) {
           const index = Array.from(slides).indexOf(initialSlide);
           if (index !== -1) {
-              goToSlide(index, false); // Go to the slide without extra scrolling on load
+              currentSlideIndex = index;
+              slideContainer.scrollTo({
+                  top: initialSlide.offsetTop,
+                  behavior: 'instant' // No smooth scroll on initial load
+              });
+              updateSlideCounter();
           }
       }
   }
