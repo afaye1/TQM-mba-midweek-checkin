@@ -1,46 +1,53 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Elements
-    const slideContainer = document.querySelector('.slide-container');
+document.addEventListener('DOMContentLoaded', function() {
     const slides = document.querySelectorAll('.slide');
-    const totalSlides = slides.length;
-
-    // Create navigation UI
-    const navigationUI = document.createElement('div');
-    navigationUI.className = 'presentation-navigation';
-    navigationUI.innerHTML = `
-        <div class="slide-progress">
-            <span class="current-slide">1</span>
-            <span class="total-slides">/ ${totalSlides}</span>
-        </div>
-        <div class="navigation-buttons">
-            <button class="nav-button prev">Back</button>
-            <button class="nav-button next">Next</button>
-        </div>`;
-    document.body.appendChild(navigationUI);
-
-    const currentSlideElement = document.querySelector('.current-slide');
+    const slideContainer = document.querySelector('.slide-container');
+    const slideCounter = document.querySelector('.slide-counter');
+    const prevButton = document.getElementById('prevSlide');
+    const nextButton = document.getElementById('nextSlide');
     let currentSlideIndex = 0;
-
-    function goToSlide(index) {
-        if (index < 0 || index >= totalSlides) return;
-        slides[index].scrollIntoView({ behavior: 'smooth' });
-        currentSlideIndex = index;
-        currentSlideElement.textContent = currentSlideIndex + 1;
+  
+    // Function to update the slide counter
+    function updateSlideCounter() {
+      slideCounter.textContent = `${currentSlideIndex + 1} / ${slides.length}`;
     }
-
-    document.querySelector('.nav-button.prev').addEventListener('click', () => {
-        goToSlide(currentSlideIndex - 1);
+  
+    // Function to go to a specific slide
+    function goToSlide(index) {
+      if (index < 0) {
+        currentSlideIndex = slides.length - 1; // Loop to last slide
+      } else if (index >= slides.length) {
+        currentSlideIndex = 0; // Loop to first slide
+      } else {
+        currentSlideIndex = index;
+      }
+  
+      slideContainer.scrollTo({
+        top: slides[currentSlideIndex].offsetTop,
+        behavior: 'smooth'
+      });
+  
+      updateSlideCounter();
+    }
+  
+    // Event listeners for Next and Previous buttons
+    prevButton.addEventListener('click', function() {
+      goToSlide(currentSlideIndex - 1);
     });
-
-    document.querySelector('.nav-button.next').addEventListener('click', () => {
+  
+    nextButton.addEventListener('click', function() {
+      goToSlide(currentSlideIndex + 1);
+    });
+  
+    // Event listeners for keyboard arrow keys (Up/Down or Left/Right)
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
         goToSlide(currentSlideIndex + 1);
+      } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+        goToSlide(currentSlideIndex - 1);
+      }
     });
-
-    // Optional: Resize listener updates counter on resize
-    window.addEventListener('resize', () => {
-        currentSlideElement.textContent = currentSlideIndex + 1;
-    });
-
-    // Initialize
-    goToSlide(0);
-});
+  
+    // Initialize slide counter and start with the first slide
+    updateSlideCounter();
+  });
+  
