@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Corporate Strategy: Case Study Analysis Assignment</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f0f0;
+            color: #333;
+            height: 100%;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+        }
+        .slide {
+            height: 100vh;
+            padding: 40px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            scroll-snap-align: start;
+            background: linear-gradient(120deg, #f8f9fa 0%, #e9ecef 100%);
+            position: relative;
+        }
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .slide-content {
+            max-width: 900px;
+            width: 100%;
+        }
+        h1 {
+            color: #204080;
+            font-size: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #204080;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            color: #204080;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        ul, ol {
+            font-size: 24px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 15px;
+        }
+        .title-slide {
+            background: linear-gradient(120deg, #204080 0%, #2c5ebd 100%);
+            color: white;
+        }
+        .title-slide h1 {
+            color: white;
+            font-size: 48px;
+        }
+        .title-slide p {
+            font-size: 24px;
+            text-align: center;
+        }
+        .highlight {
+            color: #d63384;
+            font-weight: bold;
+        }
+        .discussion-point {
+            background-color: #f0f7ff;
+            border-left: 5px solid #204080;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 22px;
+        }
+        .two-column {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        .column {
+            flex: 1;
+        }
+        .real-world {
+            background-color: #e2ffe2;
+            border-left: 5px solid #198754;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 22px;
+        }
+        .case-study {
+            background-color: #fff8e6;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .case-study h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .principle-box {
+            border: 2px solid #204080;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f8f9fa;
+        }
+        .case-box {
+            border: 2px solid #198754;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            background-color: #f8f9fa;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .case-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .deadline-banner {
+            background-color: #d63384;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 20px 0;
+            font-size: 22px;
+        }
+        .strategy-diagram {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .strategy-step {
+            background-color: #204080;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            margin: 10px 0;
+            width: 80%;
+            text-align: center;
+            font-weight: bold;
+            position: relative;
+        }
+        .strategy-step:after {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 15px solid #204080;
+        }
+        .strategy-step:last-child:after {
+            display: none;
+        }
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            position: relative;
+        }
+        .timeline:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: #204080;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        .timeline-point {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #204080;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            position: relative;
+            font-weight: bold;
+        }
+        .timeline-label {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 10px;
+            text-align: center;
+            font-size: 18px;
+            width: 150px;
+        }
+        .strategy-comparison {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .strategy-comparison th {
+            background-color: #204080;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        .strategy-comparison td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .strategy-comparison tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .task-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .task-list li {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 5px solid #204080;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .task-list li:nth-child(2) {
+            border-left-color: #198754;
+        }
+        .task-list li:nth-child(3) {
+            border-left-color: #ffc107;
+        }
+        .case-detail {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .case-detail h3 {
+            color: #204080;
+            border-bottom: 2px solid #204080;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .strategic-questions {
+            background-color: #e7f0ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .strategic-questions h4 {
+            color: #204080;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide title-slide">
+            <div class="slide-content">
+                <h1>Corporate Strategy</h1>
+                <p>Case Study Analysis Assignment</p>
+                <p style="margin-top: 40px;">BUS501: Strategic Management - Mid-Week Session</p>
+            </div>
+            <div class="slide-number">1</div>
+        </div>
+
+        <!-- Slide 2: Assignment Overview -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Assignment Overview</h2>
+                <ul>
+                    <li>Choose <span class="highlight">one case study</span> from the four options provided</li>
+                    <li>Apply strategic concepts from <span class="highlight">Units 1-4</span> to analyze and develop strategic recommendations</li>
+                    <li>Prepare a <span class="highlight">5-7 minute presentation</span> of your analysis during our Wednesday session</li>
+                    <li>Focus on practical application of strategic frameworks and tools</li>
+                </ul>
+                <div class="deadline-banner">
+                    Due: Wednesday, April 23 @ 8:00 AM UTC
+                </div>
+                <div class="discussion-point">
+                    <strong>Why this matters:</strong> This exercise will help solidify your understanding of corporate strategy concepts and prepare you for the final exam by applying theoretical frameworks to realistic business scenarios.
+                </div>
+            </div>
+            <div class="slide-number">2</div>
+        </div>
+
+        <!-- Slide 3: Key Concepts to Apply -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Key Concepts to Apply</h2>
+                <div class="strategy-diagram">
+                    <div class="strategy-step">Market Structure Analysis (Unit 1)</div>
+                    <div class="strategy-step">SWOT & PESTLE Analysis (Unit 2)</div>
+                    <div class="strategy-step">Competitive Advantage Assessment (Unit 3)</div>
+                    <div class="strategy-step">Corporate Strategy Selection (Unit 4)</div>
+                    <div class="strategy-step">Implementation Evaluation (Feasibility, Acceptability, Suitability)</div>
+                </div>
+                <div class="real-world">
+                    <strong>Remember:</strong> Successful strategies align external opportunities with internal capabilities while addressing market realities.
+                </div>
+            </div>
+            <div class="slide-number">3</div>
+        </div>
+
+        <!-- Slide 4: Case Study Options -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Case Study Options</h2>
+                <p>Choose ONE of the following real-world business scenarios:</p>
+                <div class="case-box">
+                    <h3>Case 1: Serbian Restaurant Venture</h3>
+                    <p>A new restaurant concept in Belgrade facing established competition, tourism opportunities, and rising costs.</p>
+                </div>
+                <div class="case-box">
+                    <h3>Case 2: Egyptian Agricultural Operation</h3>
+                    <p>An agricultural venture dealing with resource constraints, climate challenges, and export opportunities.</p>
+                </div>
+                <div class="case-box">
+                    <h3>Case 3: Canadian Digital Services Firm</h3>
+                    <p>A service business navigating technological disruption, market fragmentation, and evolving client demands.</p>
+                </div>
+                <div class="case-box">
+                    <h3>Case 4: Sustainable Products Manufacturer</h3>
+                    <p>An eco-friendly consumer goods producer balancing premium positioning with large competitor threats.</p>
+                </div>
+                <div class="discussion-point">
+                    <strong>Alternative option:</strong> You may analyze your own business or a company you're familiar with - just apply the same analytical framework!
+                </div>
+            </div>
+            <div class="slide-number">4</div>
+        </div>
+
+        <!-- Slide 5: Case 1 Details - Serbian Restaurant -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Case 1: Serbian Restaurant Venture</h2>
+                <div class="case-detail">
+                    <h3>Business Context</h3>
+                    <p>Danijela is planning to open a restaurant in Belgrade, Serbia. She has 8 years of experience working in various restaurants, including 3 years as a sous chef and 2 years in management. She has saved €50,000 to invest and can potentially secure an additional €30,000 loan from a local bank.</p>
+                    
+                    <h3>Market Context</h3>
+                    <ul>
+                        <li>Restaurant market in Belgrade consists of approximately 35% traditional Serbian restaurants, 25% international chains, 20% cafés with food service, and 20% specialty cuisines</li>
+                        <li>Customer segments include locals (65%), business travelers (15%), and tourists (20%)</li>
+                        <li>Average restaurant profit margins are 8-12% with high staff turnover (25% annually)</li>
+                        <li>Food costs have increased 15% in the past year, while average menu prices have only increased 7%</li>
+                        <li>Prime locations in Belgrade have rental costs of €25-35 per square meter per month</li>
+                        <li>Belgrade tourism has grown 18% in the past two years</li>
+                        <li>Traditional restaurants have loyal, older customer base (40+ years)</li>
+                        <li>Growing interest in fusion and international cuisine among younger demographics (25-40 years)</li>
+                        <li>Several international chains have entered the market in the past 3 years</li>
+                    </ul>
+                    
+                    <div class="strategic-questions">
+                        <h4>Strategic Questions to Address</h4>
+                        <ol>
+                            <li>What market structure is Danijela entering, and how should this influence her strategy?</li>
+                            <li>Using SWOT analysis, what are the key factors she should consider?</li>
+                            <li>Which of Porter's generic strategies would be most appropriate (cost leadership, differentiation, or focus)?</li>
+                            <li>Should she consider any form of integration (perhaps partnering with local suppliers)?</li>
+                            <li>How can she create a sustainable competitive advantage in this market?</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">5</div>
+        </div>
+
+        <!-- Slide 6: Case 2 Details - Egyptian Agricultural Operation -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Case 2: Egyptian Agricultural Operation</h2>
+                <div class="case-detail">
+                    <h3>Business Context</h3>
+                    <p>Ahmed is looking to establish a farming operation in Egypt. He has access to 15 acres of land in the Nile Delta region and $75,000 in capital for investment. He has a background in agricultural engineering and previously worked for a government agricultural research center for 5 years.</p>
+                    
+                    <h3>Market Context</h3>
+                    <ul>
+                        <li>Egyptian agriculture contributes approximately 12% to GDP and employs 25% of the workforce</li>
+                        <li>Government provides subsidies for certain traditional crops (wheat, rice, cotton)</li>
+                        <li>Water scarcity is increasing due to climate change and upstream dam projects on the Nile River</li>
+                        <li>Large industrial farms (100+ acres) dominate the production of traditional crops</li>
+                        <li>Export market for organic and specialty crops to Europe is growing at 20% annually</li>
+                        <li>Modern irrigation technology can reduce water usage by 30-60% but requires significant investment</li>
+                        <li>Growing urban middle class is increasing demand for premium and organic produce domestically</li>
+                        <li>Supply chain is fragmented with multiple intermediaries between farmers and end consumers</li>
+                        <li>Regional instability affects export market access and creates price volatility</li>
+                    </ul>
+                    
+                    <div class="strategic-questions">
+                        <h4>Strategic Questions to Address</h4>
+                        <ol>
+                            <li>What type of market structure exists for different agricultural products, and which segment offers the best opportunity?</li>
+                            <li>Using PESTLE analysis, what are the critical external factors affecting this venture?</li>
+                            <li>How might Ahmed create competitive advantage through vertical integration or specialization?</li>
+                            <li>Apply the GE/McKinsey matrix to evaluate different crop/product opportunities.</li>
+                            <li>How would a focus/segmentation strategy differ from a cost leadership approach in this context?</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">6</div>
+        </div>
+
+        <!-- Slide 7: Case 3 Details - Canadian Digital Services Firm -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Case 3: Canadian Digital Services Firm</h2>
+                <div class="case-detail">
+                    <h3>Business Context</h3>
+                    <p>Jordan runs a digital marketing agency in Canada serving small to medium-sized businesses. The company has been operating for 4 years, has 8 full-time employees, and generates approximately $650,000 in annual revenue. Current services include social media management, content creation, and basic SEO services.</p>
+                    
+                    <h3>Market Context</h3>
+                    <ul>
+                        <li>Digital marketing industry is highly fragmented with thousands of small agencies and freelancers</li>
+                        <li>Large marketing conglomerates are acquiring successful boutique agencies</li>
+                        <li>AI tools are automating many basic digital marketing tasks that were previously billable services</li>
+                        <li>Average client retention is 14 months before companies bring services in-house or switch providers</li>
+                        <li>Economic uncertainty has led to 20% reduction in marketing budgets for many small businesses</li>
+                        <li>Industry specialization yields 30% higher retention rates and 25% higher profit margins</li>
+                        <li>Clients increasingly demand measurable ROI and performance-based pricing models</li>
+                        <li>Remote work has expanded the talent pool but also increased competitive pressure from low-cost regions</li>
+                        <li>Specialized services (e.g., influencer marketing, SaaS marketing) command premium prices</li>
+                    </ul>
+                    
+                    <div class="strategic-questions">
+                        <h4>Strategic Questions to Address</h4>
+                        <ol>
+                            <li>How would you characterize the competitive advantage of Jordan's agency currently?</li>
+                            <li>Using Porter's Five Forces, analyze the digital marketing industry.</li>
+                            <li>What growth strategies (diversification, horizontal/vertical integration) would be most appropriate?</li>
+                            <li>Apply the suitability, feasibility, and acceptability framework to evaluate a potential specialized niche strategy.</li>
+                            <li>How can Jordan use the strategic hierarchy concept to align various aspects of the business?</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">7</div>
+        </div>
+
+        <!-- Slide 8: Case 4 Details - Sustainable Products Manufacturer -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Case 4: Sustainable Products Manufacturer</h2>
+                <div class="case-detail">
+                    <h3>Business Context</h3>
+                    <p>Lin has founded a small manufacturing company that produces environmentally-friendly household products. The company has been operating for three years with 12 employees and annual revenue of $1.2 million. Current product lines include biodegradable cleaning supplies, reusable alternatives to disposable items, and energy-efficient small appliances.</p>
+                    
+                    <h3>Market Context</h3>
+                    <ul>
+                        <li>Consumer awareness of environmental issues has increased 35% in the past 5 years</li>
+                        <li>Large corporations are rapidly introducing "green" product lines with substantial marketing budgets</li>
+                        <li>Sustainable products typically command a 20-40% price premium over conventional alternatives</li>
+                        <li>Raw material costs for eco-friendly components are 30-50% higher than conventional materials</li>
+                        <li>Retail partners demand 40-50% margins and promotional support to stock products</li>
+                        <li>Direct-to-consumer sales through e-commerce have grown 60% in two years</li>
+                        <li>Regulations around environmental claims are becoming stricter with penalties for "greenwashing"</li>
+                        <li>Loyal customer base (approximately 30,000) with 65% repeat purchase rate</li>
+                        <li>Supply chain disruptions have increased manufacturing lead times by 35%</li>
+                    </ul>
+                    
+                    <div class="strategic-questions">
+                        <h4>Strategic Questions to Address</h4>
+                        <ol>
+                            <li>What is the market structure Lin is operating in, and how is it evolving?</li>
+                            <li>Analyze the internal and external environment using SWOT and PESTLE frameworks.</li>
+                            <li>Which of Porter's generic strategies would be most effective given the competitive landscape?</li>
+                            <li>How could Lin evaluate potential diversification or integration opportunities using the GE/McKinsey matrix?</li>
+                            <li>What retrenchment or growth strategies should be considered for different product lines?</li>
+                            <li>How can Lin balance stakeholder expectations (environmentally-conscious consumers, retail partners, employees) in strategy development?</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">8</div>
+        </div>
+
+        <!-- Slide 9: Analysis Framework -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Analysis Framework</h2>
+                <div class="task-list">
+                    <li><strong>Step 1: External Analysis</strong><br>
+                        Market structure (pure competition, monopolistic competition, oligopoly, monopoly), industry attractiveness, PESTLE factors, opportunities & threats</li>
+                    <li><strong>Step 2: Internal Analysis</strong><br>
+                        Resources & capabilities, value chain position, competitive advantages, strengths & weaknesses</li>
+                    <li><strong>Step 3: Strategy Formulation</strong><br>
+                        Generic strategies (cost leadership, differentiation, focus), growth options (integration, diversification), corporate-level decisions</li>
+                </div>
+                <div class="discussion-point">
+                    <strong>Key insight:</strong> The most successful strategies aren't just theoretically sound but practically implementable given the organization's reality.
+                </div>
+            </div>
+            <div class="slide-number">9</div>
+        </div>
+
+        <!-- Slide 10: Strategy Options -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Corporate Strategy Options</h2>
+                <table class="strategy-comparison">
+                    <tr>
+                        <th>Strategy Type</th>
+                        <th>Description</th>
+                        <th>When to Consider</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Horizontal Integration</strong></td>
+                        <td>Acquiring or merging with competitors</td>
+                        <td>To increase market share, eliminate competition, achieve economies of scale</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vertical Integration</strong></td>
+                        <td>Expanding into upstream/downstream activities</td>
+                        <td>To secure supply chain, increase margins, control quality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Diversification</strong></td>
+                        <td>Expanding into new products/markets</td>
+                        <td>To reduce risk, leverage capabilities in new areas, find growth</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Retrenchment</strong></td>
+                        <td>Reducing business scope/scale</td>
+                        <td>To eliminate underperforming areas, focus on core strengths</td>
+                    </tr>
+                </table>
+                <div class="real-world">
+                    <strong>Remember:</strong> The McKinsey/GE Matrix helps evaluate which business units to grow, hold, or harvest based on market attractiveness and competitive strength.
+                </div>
+            </div>
+            <div class="slide-number">10</div>
+        </div>
+
+        <!-- Slide 11: Implementation Evaluation -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Evaluating Strategic Options</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <div class="principle-box">
+                            <h3>Suitability</h3>
+                            <ul>
+                                <li>Addresses key strategic issues</li>
+                                <li>Aligns with organizational mission</li>
+                                <li>Leverages competitive advantages</li>
+                                <li>Responds to market opportunities/threats</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="principle-box">
+                            <h3>Feasibility</h3>
+                            <ul>
+                                <li>Financial resources available</li>
+                                <li>Necessary skills and capabilities</li>
+                                <li>Operational implementation possible</li>
+                                <li>Technology requirements manageable</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="principle-box">
+                    <h3>Acceptability</h3>
+                    <ul>
+                        <li>Meets stakeholder expectations (employees, customers, suppliers, etc.)</li>
+                        <li>Acceptable financial returns for level of risk</li>
+                        <li>Compatible with organization's culture and values</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">11</div>
+        </div>
+
+        <!-- Slide 12: Presentation Expectations -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Presentation Expectations</h2>
+                <ol>
+                    <li>Brief overview of your chosen case (30-60 seconds)</li>
+                    <li>Key findings from your external and internal analysis</li>
+                    <li>Recommended corporate strategy with specific actions</li>
+                    <li>Rationale for your recommendations using course concepts</li>
+                    <li>Evaluation of strategy's suitability, feasibility, and acceptability</li>
+                    <li>Anticipated challenges and implementation considerations</li>
+                </ol>
+                <div class="timeline">
+                    <div class="timeline-point">
+                        5-7 min
+                        <div class="timeline-label">Your Presentation</div>
+                    </div>
+                    <div class="timeline-point">
+                        2-3 min
+                        <div class="timeline-label">Q&A Discussion</div>
+                    </div>
+                    <div class="timeline-point">
+                        10 min
+                        <div class="timeline-label">Review & Feedback</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">12</div>
+        </div>
+
+        <!-- Slide 13: Tips for Success -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Tips for Success</h2>
+                <ul>
+                    <li><span class="highlight">Be specific</span> - Avoid generic recommendations; tailor to the case context</li>
+                    <li><span class="highlight">Use frameworks</span> - Apply SWOT, Porter's strategies, McKinsey matrix explicitly</li>
+                    <li><span class="highlight">Consider tradeoffs</span> - Acknowledge limitations of your recommended strategy</li>
+                    <li><span class="highlight">Think like an executive</span> - Balance analytical rigor with practical reality</li>
+                    <li><span class="highlight">Connect to theory</span> - Reference relevant concepts from Units 1-4</li>
+                </ul>
+                <div class="real-world">
+                    <strong>Pro tip:</strong> The most impressive analyses don't just report facts—they synthesize insights and demonstrate strategic thinking.
+                </div>
+            </div>
+            <div class="slide-number">13</div>
+        </div>
+
+        <!-- Slide 14: Connection to Unit 5 -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Looking Ahead: Unit 5 Preview</h2>
+                <p>This case study exercise directly prepares you for our final unit, where we'll explore:</p>
+                <ul>
+                    <li><span class="highlight">Organizational culture</span> and its impact on strategy implementation</li>
+                    <li><span class="highlight">Technological uncertainty</span> and innovation management</li>
+                    <li><span class="highlight">Global strategy</span> in diverse international contexts</li>
+                    <li><span class="highlight">Managing change</span> when implementing strategic initiatives</li>
+                </ul>
+                <div class="discussion-point">
+                    <strong>Connecting the dots:</strong> Your case analysis will serve as a foundation for understanding how these additional factors affect strategic execution in real-world scenarios.
+                </div>
+            </div>
+            <div class="slide-number">14</div>
+        </div>
+
+        <!-- Slide 15: Q&A -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Questions for Discussion</h2>
+                <ul>
+                    <li>Which case study interests you most and why?</li>
+                    <li>What strategic frameworks do you find most useful from our course so far?</li>
+                    <li>How might different market structures affect strategy selection?</li>
+                    <li>What role does market share play in determining appropriate strategies?</li>
+                    <li>How do stakeholder expectations influence strategy implementation?</li>
+                </ul>
+                <div class="discussion-point">
+                    <strong>Final thought:</strong> "Strategy without tactics is the slowest route to victory. Tactics without strategy is the noise before defeat." - Sun Tzu
+                </div>
+            </div>
+            <div class="slide-number">15</div>
+        </div>
+    </div>
+</body>
+</html>
