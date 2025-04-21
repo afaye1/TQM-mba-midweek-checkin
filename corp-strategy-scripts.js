@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Event listeners
-    slideContainer.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', updateCurrentSlide);
     
     // Initialize
